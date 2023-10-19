@@ -33,8 +33,11 @@ commands:
       steps:
         #This is an example, so we're just deploying as the circleci user
         - run:
-            command: rm -rf ~/rag-app ; cp  ./ ~/rag-app
-            name: Create or clear existing app directory, and copy in the latest files
+            command: rm -rf ~/rag-app 
+            name: Clear existing app directory
+        - run:
+            command: cp  ./ ~/rag-app
+            name: Copy in the latest files
         - run:
             command: cp ./tools/circleci-rag-app.service  ~/.config/systemd/user/circleci-rag-app.service
             name: Copy service file to systemd
