@@ -29,6 +29,23 @@ commands:
               LANGCHAIN_PROJECT="rag-demo"
               EOF
             name: Create .env file containing secrets
+  create-or-update-flask-service:
+      steps:
+        - run:
+            command: mkdir /var/rag-app/ ; rm -r /var/rag-app/* ; cp -r ./* /var/rag-app/
+            name: Create or clear existing app directory, and copy in the latest files
+        - run: 
+            command: id -u rag-app-user &>/dev/null || useradd rag-app-user
+            name: Create rag-app-user to run the service under if they aren't already present 
+        - run:
+            command: cp ./tools/circleci-rag-app.service  /usr/lib/systemd/system/circleci-rag-app.service
+            name: Copy service file to systemd
+        - run:
+            command: systemctl daemon-reload
+            name: Reload systemd
+        - run:
+            command: systemctl restart circleci-rag-app.service
+            name: Restart service
 
 # Define custom jobs for this config
 # See: https://circleci.com/docs/jobs-steps/
@@ -41,6 +58,7 @@ jobs:
     steps:
       - checkout      # Check out the code in the project directory
       - install-venv
+      - create-env
       - check-python  # Invoke command "check-python" after entering venv
       - run:
           command: source ./venv/bin/activate && pytest -s
@@ -64,10 +82,12 @@ jobs:
     steps:
       - checkout
       - install-venv
+      - create-env
       - check-python  # Invoke command "check-python" after entering venv
-      - run:
-          command: source ./venv/bin/activate && flask --app rag/app run
-          name: Deploy application on self-hosted runner
+      # - run:
+      #     command: source ./venv/bin/activate && flask --app rag/app run
+      #     name: Deploy application on self-hosted runner
+      - create-or-restart-flask-service
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/workflows/
