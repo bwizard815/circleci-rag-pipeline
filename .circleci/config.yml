@@ -77,19 +77,19 @@ workflows:
     jobs:
       - run-unit-tests:
           context: rag-context  # contains environment variables
-          filters:
-            branches:
-              only:
-                - rag-pipeline # Only run the job when this branch is updated
+          # filters:
+          #   branches:
+          #     only:
+          #       - rag-pipeline # Only run the job when this branch is updated
   deployment-tests:
     # Trigger on a schedule or when retrain branch is updated
-    triggers:
-      - schedule:
-          cron: "0 0 * * *" # Daily
-          filters:
-            branches:
-              only:
-                - main
+    # triggers:
+    #   - schedule:
+    #       cron: "0 0 * * *" # Daily
+    #       filters:
+    #         branches:
+    #           only:
+    #             - main
     jobs:
       - run-nightly-tests:
           context: rag-context  # contains environment variables
