@@ -77,8 +77,8 @@ jobs:
           command: cd ~/rag-app
           name: Change directory to app
       - run:
-          command: screen -S flasksession -d -m bash -c "source ./venv/bin/activate && flask --app rag/app run" #hacky but good for example - note that sh -c is used so that && can be used to join lines
-      #     command: --foreground timeout 90 bash -c "source ./venv/bin/activate && flask --app rag/app run" # Run the server for 90 seconds to test
+          # command: bash -c "source ./venv/bin/activate && flask --app rag/app run" #hacky but good for example - note that sh -c is used so that && can be used to join lines
+          command: --foreground timeout 90 bash -c "source ./venv/bin/activate && flask --app rag/app run" # Run the server for 90 seconds to test
           name: Deploy application on self-hosted runner
 
 # Invoke jobs via workflows
