@@ -77,8 +77,9 @@ jobs:
           command: cd ~/rag-app
           name: Change directory to app
       - run:
-          command: screen -d -m sh -c "source ./venv/bin/activate && flask --app rag/app run" #hacky but good for example - note that sh -c is used so that && can be used to join lines
+          command: screen -d -m -S flasksession sh -c "source ./venv/bin/activate && flask --app rag/app run" #hacky but good for example - note that sh -c is used so that && can be used to join lines
           name: Deploy application on self-hosted runner
+          #attach to screen session to see output by running screen -r flasksession
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/workflows/
