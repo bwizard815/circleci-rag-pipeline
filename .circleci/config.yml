@@ -123,6 +123,6 @@ workflows:
       #     type: approval # This key-value pair will set your workflow to a status of "On Hold"
       - deploy:
           context: rag-context  # contains environment variables
-          requires:
-            - hold
+          # requires:
+          #   - hold
 
