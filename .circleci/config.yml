@@ -16,7 +16,16 @@ commands:
       - run:
           command: source ./tools/install-venv.sh
           name: Enter virtual env and install dependencies
-
+  create-env:
+      steps:
+        - run:
+            # Environment variables must be configured in a CircleCI project or context
+            command: |
+              cat \<<- EOF > .env
+              OPENAI_API_KEY=$OPENAI_API_KEY
+              LANGCHAIN_API_KEY=$LANGCHAIN_API_KEY
+              EOF
+            name: Create .env file containing secrets
 
 # Define custom jobs for this config
 # See: https://circleci.com/docs/jobs-steps/
