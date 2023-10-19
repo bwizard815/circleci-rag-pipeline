@@ -36,7 +36,7 @@ commands:
             command: rm -rf ~/rag-app 
             name: Clear existing app directory
         - run:
-            command: cp  ./ ~/rag-app
+            command: cp -r  ./ ~/rag-app
             name: Copy in the latest files
         - run:
             command: cp ./tools/circleci-rag-app.service  ~/.config/systemd/user/circleci-rag-app.service
@@ -98,10 +98,10 @@ workflows:
     jobs:
       - run-unit-tests:
           context: rag-context  # contains environment variables
-          # filters:
-          #   branches:
-          #     only:
-          #       - rag-pipeline # Only run the job when this branch is updated
+          filters:
+            branches:
+              only:
+                - rag-pipeline # Only run the job when this branch is updated
   deployment-tests:
     # Trigger on a schedule or when retrain branch is updated
     # triggers:
