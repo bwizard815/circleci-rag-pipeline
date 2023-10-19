@@ -68,7 +68,7 @@ jobs:
       - create-env
       - check-python  # Invoke command "check-python" after entering venv
       - run:
-          command: rm -rf ~/rag-app 
+          command: rm -rf ~/rag-app #home dir for circleci user - OK to run as them for example purposes
           name: Clear existing app directory
       - run:
           command: cp -r  ./ ~/rag-app
@@ -77,9 +77,8 @@ jobs:
           command: cd ~/rag-app
           name: Change directory to app
       - run:
-          command: source ./venv/bin/activate && flask --app rag/app run
+          command: nohup source ./venv/bin/activate && flask --app rag/app run &>/dev/null &
           name: Deploy application on self-hosted runner
-      # - create-or-update-flask-service
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/workflows/
