@@ -31,10 +31,9 @@ commands:
             name: Create .env file containing secrets
   create-or-update-flask-service:
       steps:
-        # For example purposes, the flask app will run as the circleci user on the self-hosted runner. You will need to create the deployment directory and give them permissions before running
-        # sudo  mkdir /var/rag-app && sudo chown -R circleci:circleci /var/rag-app
+        #This is an example, so we're just deploying as the circleci user
         - run:
-            command: rm -rf /var/rag-app/app ; cp  . /var/rag-app/app
+            command: rm -rf ~/rag-app ; cp  ./ ~/rag-app
             name: Create or clear existing app directory, and copy in the latest files
         - run:
             command: cp ./tools/circleci-rag-app.service  ~/.config/systemd/user/circleci-rag-app.service
