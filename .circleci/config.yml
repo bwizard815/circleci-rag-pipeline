@@ -39,8 +39,8 @@ commands:
             command: cp -r  ./ ~/rag-app
             name: Copy in the latest files
         - run:
-          command: mkdir -p ~/.config/systemd/user/
-          name: Create systemd directory
+            command: mkdir -p ~/.config/systemd/user/
+            name: Create systemd directory
         - run:
             command: cp -f ./tools/circleci-rag-app.service  ~/.config/systemd/user/circleci-rag-app.service
             name: Copy service file to systemd
