@@ -45,6 +45,9 @@ commands:
             command: cp -f ./tools/circleci-rag-app.service  ~/.config/systemd/user/circleci-rag-app.service
             name: Copy service file to systemd
         - run:
+          command: export XDG_RUNTIME_DIR="/run/user/$UID" && export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
+          name: Set environment variables that allow systemctl --user to work # https://askubuntu.com/a/1468012
+        - run:
             command: systemctl --user --runtime enable circleci-rag-app.service
             name: Enable service
         - run:
