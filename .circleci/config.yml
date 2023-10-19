@@ -45,7 +45,7 @@ commands:
             command: cp -f ./tools/circleci-rag-app.service  ~/.config/systemd/user/circleci-rag-app.service
             name: Copy service file to systemd
         - run:
-            command: systemctl --user enable circleci-rag-app.service
+            command: systemctl --user --global enable circleci-rag-app.service
             name: Enable service
         - run:
             command: systemctl --user start circleci-rag-app.service
