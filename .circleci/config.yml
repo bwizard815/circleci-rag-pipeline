@@ -29,30 +29,6 @@ commands:
               LANGCHAIN_PROJECT="rag-demo"
               EOF
             name: Create .env file containing secrets
-  # create-or-update-flask-service:
-  #     steps:
-  #       # This is an example, so we're just deploying as the circleci user
-  #       - run:
-  #           command: rm -rf ~/rag-app 
-  #           name: Clear existing app directory
-  #       - run:
-  #           command: cp -r  ./ ~/rag-app
-  #           name: Copy in the latest files
-  #       - run:
-  #           command: mkdir -p ~/.config/systemd/user/
-  #           name: Create systemd directory
-  #       - run:
-  #           command: cp -f ./tools/circleci-rag-app.service  ~/.config/systemd/user/circleci-rag-app.service
-  #           name: Copy service file to systemd
-  #       - run:
-  #           command: export XDG_RUNTIME_DIR="/run/user/$UID" && export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
-  #           name: Set environment variables that allow systemctl --user to work # https://askubuntu.com/a/1468012
-  #       - run:
-  #           command: systemctl --user --runtime enable circleci-rag-app.service
-  #           name: Enable service
-  #       - run:
-  #           command: systemctl --user restart circleci-rag-app.service
-  #           name: Restart service
 
 # Define custom jobs for this config
 # See: https://circleci.com/docs/jobs-steps/
@@ -92,8 +68,11 @@ jobs:
       - create-env
       - check-python  # Invoke command "check-python" after entering venv
       - run:
-          command: source ./venv/bin/activate && flask --app rag/app run 
+          command: source ./venv/bin/activate && flask --app rag/app run &
           name: Deploy application on self-hosted runner
+      - run: 
+          command: disown
+          name: Disown process
       # - create-or-update-flask-service
 
 # Invoke jobs via workflows
