@@ -32,7 +32,7 @@ commands:
   create-or-update-flask-service:
       steps:
         - run:
-            command: mkdir /var/rag-app/ ; rm -r /var/rag-app/* ; cp -r ./* /var/rag-app/
+            command: rm -rf /var/rag-app ; cp  . /var/rag-app/
             name: Create or clear existing app directory, and copy in the latest files
         - run: 
             command: id -u rag-app-user &>/dev/null || useradd rag-app-user
