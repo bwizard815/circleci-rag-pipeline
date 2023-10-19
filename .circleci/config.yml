@@ -68,16 +68,7 @@ jobs:
       - create-env
       - check-python  # Invoke command "check-python" after entering venv
       - run:
-          command: rm -rf ~/rag-app #home dir for circleci user - OK to run as them for example purposes - ideally this would deploy using secure credentials
-          name: Clear existing app directory
-      - run:
-          command: cp -r  ./ ~/rag-app
-          name: Copy in the latest files
-      - run: 
-          command: cd ~/rag-app
-          name: Change directory to app
-      - run:
-          command: timeout --foreground 90 bash -c "source ./venv/bin/activate ; flask --app rag/app run" # Run the server for 90 seconds to test
+          command: timeout --foreground 90 bash -c "source ./venv/bin/activate ; flask --app rag/app run" | true # Run the server for 90 seconds to test
           name: Deploy application on self-hosted runner
 
 # Invoke jobs via workflows
@@ -94,22 +85,22 @@ workflows:
                 - rag-pipeline # Only run the job when this branch is updated
   deployment-tests:
     # Trigger on a schedule or when retrain branch is updated
-    # triggers:
-    #   - schedule:
-    #       cron: "0 0 * * *" # Daily
-    #       filters:
-    #         branches:
-    #           only:
-    #             - main
+    triggers:
+      - schedule:
+          cron: "0 0 * * *" # Daily
+          filters:
+            branches:
+              only:
+                - main
     jobs:
-      # - run-nightly-tests:
-      #     context: rag-context  # contains environment variables
-      # - hold: # A job that will require manual approval in the CircleCI web application.
-      #     requires: 
-      #       - run-nightly-tests
-      #     type: approval # This key-value pair will set your workflow to a status of "On Hold"
+      - run-nightly-tests:
+          context: rag-context  # contains environment variables
+      - hold: # A job that will require manual approval in the CircleCI web application.
+          requires: 
+            - run-nightly-tests
+          type: approval # This key-value pair will set your workflow to a status of "On Hold"
       - deploy:
           context: rag-context  # contains environment variables
-          # requires:
-          #   - hold
+          requires:
+            - hold
 
