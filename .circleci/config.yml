@@ -23,7 +23,10 @@ commands:
             command: |
               cat \<<- EOF > .env
               OPENAI_API_KEY=$OPENAI_API_KEY
+              LANGCHAIN_TRACING_V2=true
               LANGCHAIN_API_KEY=$LANGCHAIN_API_KEY
+              LANGCHAIN_ENDPOINT="https://api.smith.langchain.com"
+              LANGCHAIN_PROJECT="rag-demo"
               EOF
             name: Create .env file containing secrets
 
@@ -73,7 +76,7 @@ workflows:
   integration-tests:
     jobs:
       - run-unit-tests:
-          context: rag  # contains environment variables
+          context: rag-context  # contains environment variables
           filters:
             branches:
               only:
@@ -89,13 +92,13 @@ workflows:
                 - main
     jobs:
       - run-nightly-tests:
-          context: rag  # contains environment variables
+          context: rag-context  # contains environment variables
       - hold: # A job that will require manual approval in the CircleCI web application.
           requires: 
             - run-nightly-tests
           type: approval # This key-value pair will set your workflow to a status of "On Hold"
       - deploy:
-          context: rag  # contains environment variables
+          context: rag-context  # contains environment variables
           requires:
             - hold
 
