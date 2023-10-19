@@ -1,9 +1,10 @@
 [Unit]
 Description=Runs the CircleCI RAG example app
-After=network.target
+# After=network.target
 
 [Service]
-# User=circleci
+Type=simple
+User=circleci
 WorkingDirectory=/home/circleci/rag-app
 ExecStart=/bin/bash -c "source /home/circleci/rag_app/venv/bin/activate && flask --app rag/app run"
 Restart=always
