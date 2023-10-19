@@ -3,9 +3,9 @@ Description=Runs the CircleCI RAG example app
 After=network.target
 
 [Service]
-User=rag-app-user
-WorkingDirectory=/var/rag-app
-ExecStart=/bin/bash -c "source /var/rag_app/venv/bin/activate && flask --app rag/app run"
+User=circleci
+WorkingDirectory=/var/rag-app/app
+ExecStart=/bin/bash -c "source /var/rag_app/app/venv/bin/activate && flask --app rag/app run"
 Restart=always
 
 [Install]
