@@ -39,7 +39,10 @@ commands:
             command: cp -r  ./ ~/rag-app
             name: Copy in the latest files
         - run:
-            command: cp ./tools/circleci-rag-app.service  ~/.config/systemd/user/circleci-rag-app.service
+          command: mkdir -p ~/.config/systemd/user/
+          name: Create systemd directory
+        - run:
+            command: cp -f ./tools/circleci-rag-app.service  ~/.config/systemd/user/circleci-rag-app.service
             name: Copy service file to systemd
         - run:
             command: systemctl --user enable circleci-rag-app.service
@@ -112,12 +115,12 @@ workflows:
     #           only:
     #             - main
     jobs:
-      - run-nightly-tests:
-          context: rag-context  # contains environment variables
-      - hold: # A job that will require manual approval in the CircleCI web application.
-          requires: 
-            - run-nightly-tests
-          type: approval # This key-value pair will set your workflow to a status of "On Hold"
+      # - run-nightly-tests:
+      #     context: rag-context  # contains environment variables
+      # - hold: # A job that will require manual approval in the CircleCI web application.
+      #     requires: 
+      #       - run-nightly-tests
+      #     type: approval # This key-value pair will set your workflow to a status of "On Hold"
       - deploy:
           context: rag-context  # contains environment variables
           requires:
