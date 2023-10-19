@@ -68,7 +68,7 @@ jobs:
       - create-env
       - check-python  # Invoke command "check-python" after entering venv
       - run:
-          command: timeout --foreground 90 bash -c "source ./venv/bin/activate ; flask --app rag/app run" | true # Run the server for 90 seconds to test, the ` | true` means it will exit with a 0 status code
+          command: timeout --foreground 90 bash -c "source ./venv/bin/activate ; flask --app rag/app run" ; exit 0 # Run the server for 90 seconds to test, exit with status 0
           name: Deploy application on self-hosted runner
 
 # Invoke jobs via workflows
