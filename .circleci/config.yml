@@ -93,8 +93,8 @@ workflows:
     #           only:
     #             - main
     jobs:
-      - run-nightly-tests:
-          context: rag-context  # contains environment variables
+      # - run-nightly-tests:
+      #     context: rag-context  # contains environment variables
       - hold: # A job that will require manual approval in the CircleCI web application.
           requires: 
             - run-nightly-tests
