@@ -31,7 +31,7 @@ commands:
             name: Create .env file containing secrets
   create-or-update-flask-service:
       steps:
-        #This is an example, so we're just deploying as the circleci user
+        This is an example, so we're just deploying as the circleci user
         - run:
             command: rm -rf ~/rag-app 
             name: Clear existing app directory
@@ -53,6 +53,13 @@ commands:
         - run:
             command: systemctl --user restart circleci-rag-app.service
             name: Restart service
+  start-flask-background:
+        - run:
+            command: source ./venv/bin/activate && flask --app rag/app run &
+            name: Start flask in background
+        - run:
+            command: disown
+            name: Disown flask process so it outlives the runner
 
 # Define custom jobs for this config
 # See: https://circleci.com/docs/jobs-steps/
@@ -94,7 +101,8 @@ jobs:
       # - run:
       #     command: source ./venv/bin/activate && flask --app rag/app run
       #     name: Deploy application on self-hosted runner
-      - create-or-update-flask-service
+      # - create-or-update-flask-service
+      - start-flask-background
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/workflows/
