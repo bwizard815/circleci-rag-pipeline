@@ -54,6 +54,7 @@ commands:
             command: systemctl --user restart circleci-rag-app.service
             name: Restart service
   start-flask-background:
+      steps:
         - run:
             command: source ./venv/bin/activate && flask --app rag/app run &
             name: Start flask in background
