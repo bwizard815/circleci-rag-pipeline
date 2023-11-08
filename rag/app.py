@@ -6,7 +6,7 @@ import chains
 
 
 # Initialize the application chain
-chain = chains.DocumantationChain("https://docs.smith.langchain.com").get_chain()
+chain = chains.DocumentationChain("https://docs.smith.langchain.com").get_chain()
 
 
 app = Flask(__name__)
