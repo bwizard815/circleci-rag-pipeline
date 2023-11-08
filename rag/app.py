@@ -6,7 +6,6 @@ import chains
 
 
 # Initialize the application chain
-# chain = chains.assistant_chain("Bob").getChain()
 chain = chains.DocumantationChain("https://docs.smith.langchain.com").get_chain()
 
 
